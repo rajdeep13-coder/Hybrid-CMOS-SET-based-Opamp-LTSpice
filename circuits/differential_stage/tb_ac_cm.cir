@@ -1,0 +1,46 @@
+* ==============================================================================
+* TESTBENCH: tb_ac_cm.cir
+* CIRCUIT: CMOS Differential Input Stage
+* PURPOSE: Common-Mode AC Gain & CMRR Calculation
+* ==============================================================================
+
+.include models/cmos_models.inc
+
+.param VDD_val  = 0.80
+.param VICM_val = 0.60
+
+* Power Supply
+VDD VDD 0 DC {VDD_val}
+
+* CMOS Bias Network
+Rbias VDD   VBIAS 173.5k
+M6    VBIAS VBIAS 0 0 NMOS_LV L=1.0u W=2.7u
+
+* Tail Current Sink
+M5    TAIL  VBIAS 0 0 NMOS_LV L=1.0u W=2.7u
+
+* NMOS Differential Input Pair
+M1    N_D1  IN_CM TAIL 0 NMOS_LV L=1.0u W=4.0u
+M2    OUT   IN_CM TAIL 0 NMOS_LV L=1.0u W=4.0u
+
+* PMOS Active Mirror Load
+M3    N_D1  N_D1  VDD  VDD PMOS_LV L=1.0u W=6.4u
+M4    OUT   N_D1  VDD  VDD PMOS_LV L=1.0u W=6.4u
+
+* Output Load Capacitance
+CL    OUT   0     1p
+
+* Common-Mode AC Source (AC = 1.0 V)
+Vcm   IN_CM 0     DC {VICM_val} AC 1.0 0
+
+* Analysis Directive: Decadal sweep from 1 Hz to 1 GHz
+.ac dec 20 1 1G
+
+* Measurements
+.meas ac Acm_lf     FIND mag(V(OUT)) AT 1
+.meas ac Acm_dB     FIND 20*log10(mag(V(OUT))) AT 1
+* Differential gain from tb_ac_diff = 50.969 dB (linear: 353.54)
+.meas ac CMRR_dB    PARAM (50.9689956 - Acm_dB)
+.meas ac CMRR_lin   PARAM (353.544 / Acm_lf)
+
+.end

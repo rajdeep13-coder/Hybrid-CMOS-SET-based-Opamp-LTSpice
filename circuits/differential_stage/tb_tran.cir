@@ -1,0 +1,51 @@
+* ==============================================================================
+* TESTBENCH: tb_tran.cir
+* CIRCUIT: CMOS Differential Input Stage
+* PURPOSE: Transient Sinusoidal Response, Linearity & THD
+* ==============================================================================
+
+.include models/cmos_models.inc
+
+.param VDD_val  = 0.80
+.param VICM_val = 0.60
+
+* Power Supply
+VDD VDD 0 DC {VDD_val}
+
+* CMOS Bias Network
+Rbias VDD   VBIAS 173.5k
+M6    VBIAS VBIAS 0 0 NMOS_LV L=1.0u W=2.7u
+
+* Tail Current Sink
+M5    TAIL  VBIAS 0 0 NMOS_LV L=1.0u W=2.7u
+
+* NMOS Differential Input Pair
+M1    N_D1  IN_P  TAIL 0 NMOS_LV L=1.0u W=4.0u
+M2    OUT   IN_N  TAIL 0 NMOS_LV L=1.0u W=4.0u
+
+* PMOS Active Mirror Load
+M3    N_D1  N_D1  VDD  VDD PMOS_LV L=1.0u W=6.4u
+M4    OUT   N_D1  VDD  VDD PMOS_LV L=1.0u W=6.4u
+
+* Output Load Capacitance
+CL    OUT   0     1p
+
+* Differential Input Sources:
+* Frequency = 1 kHz, 0.1 mV peak each (0.2 mV peak differential = 0.4 mV pk-pk)
+VIP   IN_P  0     SINE({VICM_val}  0.1m 1k)
+VIN   IN_N  0     SINE({VICM_val} -0.1m 1k)
+
+* Analysis Directive: Simulate 3 ms with 1 us max time-step
+.tran 0 3m 0 1u
+
+* Measurements
+.meas tran Vout_max   MAX V(OUT) FROM 1m TO 3m
+.meas tran Vout_min   MIN V(OUT) FROM 1m TO 3m
+.meas tran Vout_pp    PARAM (Vout_max - Vout_min)
+.meas tran Vin_pp     PARAM (0.4m)
+.meas tran Gain_tran  PARAM (Vout_pp / Vin_pp)
+
+* Fourier Distortion Analysis on Output at 1 kHz
+.four 1k V(OUT)
+
+.end

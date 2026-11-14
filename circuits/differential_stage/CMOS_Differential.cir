@@ -1,0 +1,107 @@
+* ==============================================================================
+* FILE: CMOS_Differential.cir
+* PROJECT: Hybrid CMOS-SET Op-Amp (LTspice Implementation)
+* MILESTONE: 1 - Circuit A: CMOS Differential Input Stage
+* ==============================================================================
+* TOPOLOGY:
+* - M1/M2: NMOS differential input pair (W = 4.0 um, L = 1.0 um)
+* - M3/M4: PMOS active current-mirror load (W = 6.4 um, L = 1.0 um)
+* - M5:    NMOS tail-current sink (W = 2.7 um, L = 1.0 um, Itail ~ 2.0 uA)
+* - M6:    NMOS bias reference diode (W = 2.7 um, L = 1.0 um, Iref ~ 2.0 uA)
+* - Rbias: Bias setting resistor (173.5 kOhm from VDD to VBIAS)
+* - CL:    Output capacitive load (1.0 pF)
+*
+* SPECIFICATION & TARGETS:
+* - Positive supply: VDD = 0.80 V
+* - Negative supply: Ground = 0.00 V
+* - Tail current:    Itail = 2.0 uA (+/- 1%)
+* - Branch current:  I1 = I2 = 1.0 uA
+* - Common-mode VICM: 0.60 V (Nominal)
+* ==============================================================================
+
+* Include Model Library (Generic Low-Voltage CMOS Level 1)
+.include models/cmos_models.inc
+
+* Circuit Parameters
+.param VDD_val  = 0.80
+.param VICM_val = 0.60
+
+* Power Supply
+VDD VDD 0 DC {VDD_val}
+
+* CMOS Bias Network (Self-Biased Diode Reference)
+* Generates VBIAS ~ 0.449 V to set M5 tail current to 2.0 uA
+Rbias VDD   VBIAS 173.5k
+M6    VBIAS VBIAS 0 0 NMOS_LV L=1.0u W=2.7u
+
+* Tail Current Sink
+M5    TAIL  VBIAS 0 0 NMOS_LV L=1.0u W=2.7u
+
+* NMOS Differential Input Pair
+* Connections: Drain Gate Source Bulk
+M1    N_D1  IN_P  TAIL 0 NMOS_LV L=1.0u W=4.0u
+M2    OUT   IN_N  TAIL 0 NMOS_LV L=1.0u W=4.0u
+
+* PMOS Active Current Mirror Load
+* M3: Diode-connected load
+* M4: High-impedance active load
+* Connections: Drain Gate Source Bulk
+M3    N_D1  N_D1  VDD  VDD PMOS_LV L=1.0u W=6.4u
+M4    OUT   N_D1  VDD  VDD PMOS_LV L=1.0u W=6.4u
+
+* Output Load Capacitance
+CL    OUT   0     1p
+
+* Signal Sources (Differential Mode AC + Nominal DC)
+* VIP and VIN set for differential small-signal AC excitation
+VIP   IN_P  0     DC {VICM_val} AC 0.5 0
+VIN   IN_N  0     DC {VICM_val} AC 0.5 180
+
+* ==============================================================================
+* SIMULATION DIRECTIVES
+* Default active: Operating Point (.op) and AC Small-Signal (.ac)
+* ==============================================================================
+.op
+.ac dec 20 10 1G
+
+* Alternative Directives (uncomment for individual analysis):
+* .dc VIP 0.55 0.65 0.1m
+* .tran 0 3m 0 1u
+
+* ==============================================================================
+* MEASUREMENT DIRECTIVES (.meas)
+* Automated post-processing of all engineering figures of merit
+* ==============================================================================
+* 1. Operating Point Node Voltages
+.meas op V_vdd    FIND V(VDD)
+.meas op V_vbias  FIND V(VBIAS)
+.meas op V_tail   FIND V(TAIL)
+.meas op V_d1     FIND V(N_D1)
+.meas op V_out    FIND V(OUT)
+
+* 2. Branch Currents and Current Balance
+.meas op I_bias   FIND I(Rbias)
+.meas op I_tail   FIND Id(M5)
+.meas op I_m1     FIND Id(M1)
+.meas op I_m2     FIND Id(M2)
+.meas op I_m3     FIND -Id(M3)
+.meas op I_m4     FIND -Id(M4)
+.meas op I_bal_err PARAM abs(I_m1 - I_m2)
+
+* 3. Transistor Drain-Source Headroom & Saturation Validation
+.meas op Vds_M5   PARAM V_tail
+.meas op Vds_M1   PARAM (V_d1 - V_tail)
+.meas op Vds_M2   PARAM (V_out - V_tail)
+.meas op Vds_M3   PARAM (V_vdd - V_d1)
+.meas op Vds_M4   PARAM (V_vdd - V_out)
+
+* 4. Power Consumption
+.meas op P_diss   PARAM (V_vdd * (-I(VDD)))
+
+* 5. AC Small-Signal Frequency Response
+.meas ac Ad_lf    FIND mag(V(OUT)) AT 10
+.meas ac Ad_dB    FIND 20*log10(mag(V(OUT))) AT 10
+.meas ac f_3dB    WHEN mag(V(OUT))=Ad_lf/sqrt(2)
+.meas ac GBW      WHEN mag(V(OUT))=1
+
+.end

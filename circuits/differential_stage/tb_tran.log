@@ -1,0 +1,53 @@
+LTspice 26.1.1 for Windows
+Circuit: C:\Users\rajde\OneDrive\Desktop\Hybrid-CMOS-SET-based-Opamp-LTSpice\circuits\differential_stage\tb_tran.cir
+Start Time: Sat Nov 14 16:04:32 2026
+solver = Normal
+Maximum thread count: 12
+tnom = 27
+temp = 27
+method = trap
+Model "nmos_lv": Oxide thickness thinner than recommended for a level 1 MOSFET.
+Instance "M6": Length shorter than recommended for a level 1 MOSFET.
+Instance "M6": Width narrower than recommended for a level 1 MOSFET.
+Instance "M5": Length shorter than recommended for a level 1 MOSFET.
+Instance "M5": Width narrower than recommended for a level 1 MOSFET.
+Instance "M1": Length shorter than recommended for a level 1 MOSFET.
+Instance "M1": Width narrower than recommended for a level 1 MOSFET.
+Instance "M2": Length shorter than recommended for a level 1 MOSFET.
+Instance "M2": Width narrower than recommended for a level 1 MOSFET.
+Model "pmos_lv": Oxide thickness thinner than recommended for a level 1 MOSFET.
+Instance "M3": Length shorter than recommended for a level 1 MOSFET.
+Instance "M3": Width narrower than recommended for a level 1 MOSFET.
+Instance "M4": Length shorter than recommended for a level 1 MOSFET.
+Instance "M4": Width narrower than recommended for a level 1 MOSFET.
+Direct Newton iteration succeeded in finding operating point.
+Total elapsed time: 0.212 seconds.
+Total iterations: 6055
+
+Files loaded:
+C:\Users\rajde\OneDrive\Desktop\Hybrid-CMOS-SET-based-Opamp-LTSpice\circuits\differential_stage\tb_tran.cir
+C:\Users\rajde\OneDrive\Desktop\Hybrid-CMOS-SET-based-Opamp-LTSpice\circuits\differential_stage\models\cmos_models.inc
+
+Fourier components of V(OUT)
+N-Period=1
+DC component:0.371876
+
+Harmonic	Frequency	 Fourier 	Normalized	 Phase  	Normalized
+ Number 	  [Hz]   	Component	 Component	[degree]	Phase [deg]
+    1   	 1.000e+03	 7.056e-02	 1.000e+00	   93.68°	    0.00°
+    2   	 2.000e+03	 3.111e-05	 4.409e-04	 -161.79°	 -255.47°
+    3   	 3.000e+03	 7.316e-08	 1.037e-06	  102.15°	    8.47°
+    4   	 4.000e+03	 5.385e-10	 7.631e-09	 -177.78°	 -271.46°
+    5   	 5.000e+03	 7.285e-10	 1.032e-08	  -78.90°	 -172.58°
+    6   	 6.000e+03	 7.335e-10	 1.040e-08	 -139.73°	 -233.41°
+    7   	 7.000e+03	 5.373e-10	 7.614e-09	   78.10°	  -15.58°
+    8   	 8.000e+03	 6.924e-10	 9.812e-09	  -81.30°	 -174.98°
+    9   	 9.000e+03	 1.744e-10	 2.471e-09	  -78.50°	 -172.18°
+Partial Harmonic Distortion: 0.044091%
+Total Harmonic Distortion:   0.044072%
+
+vout_max: MAX(V(OUT))=0.442469656467 FROM 0.001 TO 0.003
+vout_min: MIN(V(OUT))=0.301344364882 FROM 0.001 TO 0.003
+vout_pp: (Vout_max - Vout_min)=0.141125291586
+vin_pp: (0.4m)=0.0004
+gain_tran: (Vout_pp / Vin_pp)=352.813228965

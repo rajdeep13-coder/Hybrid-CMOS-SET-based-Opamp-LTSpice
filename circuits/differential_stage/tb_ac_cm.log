@@ -1,0 +1,34 @@
+LTspice 26.1.1 for Windows
+Circuit: C:\Users\rajde\OneDrive\Desktop\Hybrid-CMOS-SET-based-Opamp-LTSpice\circuits\differential_stage\tb_ac_cm.cir
+Start Time: Sat Nov 14 16:04:30 2026
+solver = Normal
+Maximum thread count: 12
+tnom = 27
+temp = 27
+method = trap
+Model "nmos_lv": Oxide thickness thinner than recommended for a level 1 MOSFET.
+Instance "M6": Length shorter than recommended for a level 1 MOSFET.
+Instance "M6": Width narrower than recommended for a level 1 MOSFET.
+Instance "M5": Length shorter than recommended for a level 1 MOSFET.
+Instance "M5": Width narrower than recommended for a level 1 MOSFET.
+Instance "M1": Length shorter than recommended for a level 1 MOSFET.
+Instance "M1": Width narrower than recommended for a level 1 MOSFET.
+Instance "M2": Length shorter than recommended for a level 1 MOSFET.
+Instance "M2": Width narrower than recommended for a level 1 MOSFET.
+Model "pmos_lv": Oxide thickness thinner than recommended for a level 1 MOSFET.
+Instance "M3": Length shorter than recommended for a level 1 MOSFET.
+Instance "M3": Width narrower than recommended for a level 1 MOSFET.
+Instance "M4": Length shorter than recommended for a level 1 MOSFET.
+Instance "M4": Width narrower than recommended for a level 1 MOSFET.
+Direct Newton iteration succeeded in finding operating point.
+Total elapsed time: 0.170 seconds.
+Total iterations: 21
+
+Files loaded:
+C:\Users\rajde\OneDrive\Desktop\Hybrid-CMOS-SET-based-Opamp-LTSpice\circuits\differential_stage\tb_ac_cm.cir
+C:\Users\rajde\OneDrive\Desktop\Hybrid-CMOS-SET-based-Opamp-LTSpice\circuits\differential_stage\models\cmos_models.inc
+
+acm_lf: mag(V(OUT))=(-55.2038095386dB,0°) at 1
+acm_db: 20*log10(mag(V(OUT)))=(34.8393809765dB,180°) at 1
+cmrr_db: (50.9689956 - Acm_dB)=(40.5202658357dB,0°)
+cmrr_lin: (353.544 / Acm_lf)=(106.172678963dB,0°)

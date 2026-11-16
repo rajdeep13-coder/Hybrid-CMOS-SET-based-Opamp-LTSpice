@@ -1,34 +1,34 @@
 LTspice 26.1.1 for Windows
-Circuit: C:\Users\rajde\OneDrive\Desktop\Hybrid-CMOS-SET-based-Opamp-LTSpice\circuits\differential_stage\CMOS_Differential.cir
-Start Time: Sat Nov 14 16:01:45 2026
+Circuit: C:\Users\rajde\OneDrive\Desktop\Hybrid-CMOS-SET-based-Opamp-LTSpice\circuits\differential_stage\CMOS_Differential.net
+Start Time: Mon Nov 16 12:02:58 2026
 solver = Normal
 Maximum thread count: 12
 tnom = 27
 temp = 27
 method = trap
 Model "nmos_lv": Oxide thickness thinner than recommended for a level 1 MOSFET.
-Instance "M6": Length shorter than recommended for a level 1 MOSFET.
-Instance "M6": Width narrower than recommended for a level 1 MOSFET.
-Instance "M5": Length shorter than recommended for a level 1 MOSFET.
-Instance "M5": Width narrower than recommended for a level 1 MOSFET.
 Instance "M1": Length shorter than recommended for a level 1 MOSFET.
 Instance "M1": Width narrower than recommended for a level 1 MOSFET.
 Instance "M2": Length shorter than recommended for a level 1 MOSFET.
 Instance "M2": Width narrower than recommended for a level 1 MOSFET.
+Instance "M5": Length shorter than recommended for a level 1 MOSFET.
+Instance "M5": Width narrower than recommended for a level 1 MOSFET.
+Instance "M6": Length shorter than recommended for a level 1 MOSFET.
+Instance "M6": Width narrower than recommended for a level 1 MOSFET.
 Model "pmos_lv": Oxide thickness thinner than recommended for a level 1 MOSFET.
 Instance "M3": Length shorter than recommended for a level 1 MOSFET.
 Instance "M3": Width narrower than recommended for a level 1 MOSFET.
 Instance "M4": Length shorter than recommended for a level 1 MOSFET.
 Instance "M4": Width narrower than recommended for a level 1 MOSFET.
 Direct Newton iteration succeeded in finding operating point.
-Total elapsed time: 0.164 seconds.
+Total elapsed time: 0.390 seconds.
 Total iterations: 21
 
 Files loaded:
-C:\Users\rajde\OneDrive\Desktop\Hybrid-CMOS-SET-based-Opamp-LTSpice\circuits\differential_stage\CMOS_Differential.cir
+C:\Users\rajde\OneDrive\Desktop\Hybrid-CMOS-SET-based-Opamp-LTSpice\circuits\differential_stage\CMOS_Differential.net
+C:\Users\rajde\AppData\Local\LTspice\lib\cmp\standard.mos
 C:\Users\rajde\OneDrive\Desktop\Hybrid-CMOS-SET-based-Opamp-LTSpice\circuits\differential_stage\models\cmos_models.inc
 
-ad_lf: mag(V(OUT))=(50.9689956199dB,0°) at 10
-ad_db: 20*log10(mag(V(OUT)))=(34.1461215119dB,0°) at 10
-f_3db: mag(V(OUT))=Ad_lf/sqrt(2) AT 15550.1756973
+ad_0db: mag(V(OUT))=(50.9689956199dB,0°) at 10
+f_3db: mag(V(OUT))=Ad_0dB/sqrt(2) AT 15550.1756973
 gbw: mag(V(OUT))=1 AT 5461958.23968

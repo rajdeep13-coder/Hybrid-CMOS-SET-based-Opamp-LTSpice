@@ -1,0 +1,52 @@
+LTspice 26.1.1 for Windows
+Circuit: C:\Users\rajde\OneDrive\Desktop\Hybrid-CMOS-SET-based-Opamp-LTSpice\circuits\gain_integrator_stage\testbenches\tb_tran.cir
+Start Time: Mon Nov 16 13:27:55 2026
+solver = Normal
+Maximum thread count: 12
+tnom = 27
+temp = 27
+method = trap
+Model "nmos_lv": Oxide thickness thinner than recommended for a level 1 MOSFET.
+Instance "M7": Length shorter than recommended for a level 1 MOSFET.
+Instance "M7": Width narrower than recommended for a level 1 MOSFET.
+Model "pmos_lv": Oxide thickness thinner than recommended for a level 1 MOSFET.
+Instance "M9": Length shorter than recommended for a level 1 MOSFET.
+Instance "M9": Width narrower than recommended for a level 1 MOSFET.
+Instance "M8": Length shorter than recommended for a level 1 MOSFET.
+Instance "M8": Width narrower than recommended for a level 1 MOSFET.
+Direct Newton iteration succeeded in finding operating point.
+Total elapsed time: 0.174 seconds.
+Total iterations: 10049
+
+Files loaded:
+C:\Users\rajde\OneDrive\Desktop\Hybrid-CMOS-SET-based-Opamp-LTSpice\circuits\gain_integrator_stage\testbenches\tb_tran.cir
+C:\Users\rajde\OneDrive\Desktop\Hybrid-CMOS-SET-based-Opamp-LTSpice\circuits\gain_integrator_stage\models\cmos_models.inc
+
+Fourier components of V(OUT)
+N-Period=1
+DC component:0.400654
+
+Harmonic	Frequency	 Fourier 	Normalized	 Phase  	Normalized
+ Number 	  [Hz]   	Component	 Component	[degree]	Phase [deg]
+    1   	 1.000e+03	 2.518e-01	 1.000e+00	  -86.33°	    0.00°
+    2   	 2.000e+03	 7.735e-04	 3.072e-03	 -165.34°	  -79.01°
+    3   	 3.000e+03	 9.009e-07	 3.579e-06	 -158.35°	  -72.02°
+    4   	 4.000e+03	 1.574e-08	 6.253e-08	  178.12°	  264.45°
+    5   	 5.000e+03	 2.649e-09	 1.052e-08	  102.16°	  188.48°
+    6   	 6.000e+03	 2.370e-09	 9.415e-09	  112.73°	  199.06°
+    7   	 7.000e+03	 2.326e-09	 9.239e-09	  100.51°	  186.84°
+    8   	 8.000e+03	 2.275e-09	 9.038e-09	  121.08°	  207.41°
+    9   	 9.000e+03	 2.179e-09	 8.656e-09	   73.09°	  159.42°
+Partial Harmonic Distortion: 0.307240%
+Total Harmonic Distortion:   0.307237%
+
+vin_max: MAX(V(VIN))=0.000999995041639 FROM 0.002 TO 0.005
+vin_min: MIN(V(VIN))=-0.000999995041639 FROM 0.002 TO 0.005
+vin_pp: (Vin_max - Vin_min)=0.00199999008328
+vout_max: MAX(V(OUT))=0.653177917004 FROM 0.002 TO 0.005
+vout_min: MIN(V(OUT))=0.149666041136 FROM 0.002 TO 0.005
+vout_pp: (Vout_max - Vout_min)=0.503511875868
+gain_tran: (Vout_pp / Vin_pp)=251.757186237
+gain_tran_db: (20*log10(Gain_tran))=48.0196375208
+vout_at_vin_peak: V(OUT)=0.150165118277 at 0.00225
+vout_at_vin_trough: V(OUT)=0.652640402317 at 0.00275

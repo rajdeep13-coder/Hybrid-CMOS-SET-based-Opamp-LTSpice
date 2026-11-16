@@ -1,0 +1,72 @@
+* ==============================================================================
+* TESTBENCH: tb_op.cir
+* CIRCUIT: CMOS Gain / Integrator Stage (Circuit B)
+* PURPOSE: Operating Point (.op), Currents, Transistor Regions & Power Dissipation
+* ==============================================================================
+
+.include ../models/cmos_models.inc
+
+.param VDD_val = 0.80
+
+* Power Supply
+VDD VDD 0 DC {VDD_val}
+
+* PMOS Active Load Current Mirror Reference
+* M9: Diode-connected PMOS bias reference
+M9  VBP  VBP  VDD  VDD  PMOS_LV L=1.0u W=8.0u
+RPB VBP  0    175k
+
+* PMOS Active Current-Source Load
+M8  OUT  VBP  VDD  VDD  PMOS_LV L=1.0u W=8.0u
+
+* NMOS Common-Source Gain Transistor
+M7  OUT  GATE 0    0    NMOS_LV L=1.0u W=4.0u
+
+* NMOS Gate Bias Divider
+R1  VDD  GATE 171.35k
+R2  GATE 0    200k
+
+* Input AC Coupling Capacitor & Signal Source (DC zero)
+CIN VIN  GATE 10u
+VIN VIN  0    DC 0
+
+* Miller Compensation & Output Load Capacitance
+CC  OUT  GATE 1p
+CL  OUT  0    1p
+
+* Analysis Directive
+.op
+
+* Operating Point Node Voltage Measurements
+.meas op V_vdd          FIND V(VDD)
+.meas op V_vbp          FIND V(VBP)
+.meas op V_gate         FIND V(GATE)
+.meas op V_out          FIND V(OUT)
+
+* Branch and Device Currents
+.meas op I_rpb          FIND I(RPB)
+.meas op I_m9           FIND -Id(M9)
+.meas op I_m8           FIND -Id(M8)
+.meas op I_m7           FIND Id(M7)
+.meas op I_r1           FIND I(R1)
+.meas op I_r2           FIND I(R2)
+.meas op I_bal_err      PARAM abs(I_m8 - I_m7)
+
+* Transistor Operating Regions & Saturation Margins
+.meas op Vds_M7         PARAM V_out
+.meas op Vgs_M7         PARAM V_gate
+.meas op Vdsat_M7       PARAM (V_gate - 0.35)
+.meas op Vds_margin_M7  PARAM (Vds_M7 - Vdsat_M7)
+
+.meas op Vds_M8         PARAM (V_vdd - V_out)
+.meas op Vgs_M8         PARAM (V_vdd - V_vbp)
+.meas op Vdsat_M8       PARAM (Vgs_M8 - 0.35)
+.meas op Vds_margin_M8  PARAM (Vds_M8 - Vdsat_M8)
+
+.meas op Vds_M9         PARAM (V_vdd - V_vbp)
+
+* Total Supply Current and Power Consumption
+.meas op I_supply       FIND -I(VDD)
+.meas op P_diss         PARAM (V_vdd * (-I(VDD)))
+
+.end

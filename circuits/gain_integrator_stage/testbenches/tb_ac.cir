@@ -1,0 +1,48 @@
+* ==============================================================================
+* TESTBENCH: tb_ac.cir
+* CIRCUIT: CMOS Gain / Integrator Stage (Circuit B)
+* PURPOSE: Small-Signal AC Frequency Response, Miller Compensation & Bandwidth
+* ==============================================================================
+
+.include ../models/cmos_models.inc
+
+.param VDD_val = 0.80
+
+* Power Supply
+VDD VDD 0 DC {VDD_val}
+
+* PMOS Active Load Current Mirror Reference
+M9  VBP  VBP  VDD  VDD  PMOS_LV L=1.0u W=8.0u
+RPB VBP  0    175k
+
+* PMOS Active Current-Source Load
+M8  OUT  VBP  VDD  VDD  PMOS_LV L=1.0u W=8.0u
+
+* NMOS Common-Source Gain Transistor
+M7  OUT  GATE 0    0    NMOS_LV L=1.0u W=4.0u
+
+* NMOS Gate Bias Divider Network
+R1  VDD  GATE 171.35k
+R2  GATE 0    200k
+
+* Input AC Coupling Capacitor & AC Excitation Source
+CIN VIN  GATE 10u
+VIN VIN  0    DC 0 AC 1.0 0
+
+* Miller Compensation Capacitor & Output Load
+CC  OUT  GATE 1p
+CL  OUT  0    1p
+
+* Analysis Directive: Logarithmic Decadal Sweep from 1 Hz to 1 GHz
+.ac dec 20 1 1G
+
+* Measurements (Transfer ratio V(OUT) / V(VIN))
+.meas ac Ad_0dB       FIND mag(V(OUT)/V(VIN)) AT 10
+.meas ac Ad_dB        FIND 20*log10(mag(V(OUT)/V(VIN))) AT 10
+.meas ac f_3dB        WHEN mag(V(OUT)/V(VIN))=Ad_0dB/sqrt(2)
+.meas ac GBW          WHEN mag(V(OUT)/V(VIN))=1
+.meas ac Phase_lf     FIND ph(V(OUT)/V(VIN)) AT 10
+.meas ac Phase_at_gbw FIND ph(V(OUT)/V(VIN)) WHEN mag(V(OUT)/V(VIN))=1
+.meas ac Phase_margin PARAM (180 + Phase_at_gbw)
+
+.end

@@ -1,0 +1,59 @@
+* ==============================================================================
+* TESTBENCH: tb_tran.cir
+* CIRCUIT: CMOS Gain / Integrator Stage (Circuit B)
+* PURPOSE: Transient Sinusoidal Response, Amplification, Phase Inversion & THD
+* ==============================================================================
+
+.include ../models/cmos_models.inc
+
+.param VDD_val = 0.80
+
+* Power Supply
+VDD VDD 0 DC {VDD_val}
+
+* PMOS Active Load Current Mirror Reference
+M9  VBP  VBP  VDD  VDD  PMOS_LV L=1.0u W=8.0u
+RPB VBP  0    175k
+
+* PMOS Active Current-Source Load
+M8  OUT  VBP  VDD  VDD  PMOS_LV L=1.0u W=8.0u
+
+* NMOS Common-Source Gain Transistor
+M7  OUT  GATE 0    0    NMOS_LV L=1.0u W=4.0u
+
+* NMOS Gate Bias Divider Network
+R1  VDD  GATE 171.35k
+R2  GATE 0    200k
+
+* Input AC Coupling Capacitor & Sinusoidal Excitation
+* f = 1 kHz, Amplitude = 1.0 mV peak (2.0 mV peak-to-peak)
+CIN VIN  GATE 10u
+VIN VIN  0    SINE(0 1m 1k)
+
+* Miller Compensation Capacitor & Output Load
+CC  OUT  GATE 1p
+CL  OUT  0    1p
+
+* Transient Analysis Directive: Run 5 ms (5 cycles of 1 kHz), max step 1 us
+.tran 0 5m 2m 1u
+
+* Measurements (Evaluated from 2 ms to 5 ms, after initial turn-on settling)
+.meas tran Vin_max    MAX V(VIN)   FROM 2m TO 5m
+.meas tran Vin_min    MIN V(VIN)   FROM 2m TO 5m
+.meas tran Vin_pp     PARAM (Vin_max - Vin_min)
+
+.meas tran Vout_max   MAX V(OUT)   FROM 2m TO 5m
+.meas tran Vout_min   MIN V(OUT)   FROM 2m TO 5m
+.meas tran Vout_pp    PARAM (Vout_max - Vout_min)
+
+.meas tran Gain_tran  PARAM (Vout_pp / Vin_pp)
+.meas tran Gain_tran_dB PARAM (20*log10(Gain_tran))
+
+* Verification of Phase Inversion: Output at positive peak of Input
+.meas tran Vout_at_vin_peak FIND V(OUT) AT 2.25m
+.meas tran Vout_at_vin_trough FIND V(OUT) AT 2.75m
+
+* Fourier Harmonic Distortion Analysis at 1 kHz
+.four 1k V(OUT)
+
+.end

@@ -1,0 +1,31 @@
+LTspice 26.1.1 for Windows
+Circuit: C:\Users\rajde\OneDrive\Desktop\Hybrid-CMOS-SET-based-Opamp-LTSpice\circuits\gain_integrator_stage\testbenches\tb_ac.cir
+Start Time: Mon Nov 16 13:27:53 2026
+solver = Normal
+Maximum thread count: 12
+tnom = 27
+temp = 27
+method = trap
+Model "nmos_lv": Oxide thickness thinner than recommended for a level 1 MOSFET.
+Instance "M7": Length shorter than recommended for a level 1 MOSFET.
+Instance "M7": Width narrower than recommended for a level 1 MOSFET.
+Model "pmos_lv": Oxide thickness thinner than recommended for a level 1 MOSFET.
+Instance "M9": Length shorter than recommended for a level 1 MOSFET.
+Instance "M9": Width narrower than recommended for a level 1 MOSFET.
+Instance "M8": Length shorter than recommended for a level 1 MOSFET.
+Instance "M8": Width narrower than recommended for a level 1 MOSFET.
+Direct Newton iteration succeeded in finding operating point.
+Total elapsed time: 0.134 seconds.
+Total iterations: 8
+
+Files loaded:
+C:\Users\rajde\OneDrive\Desktop\Hybrid-CMOS-SET-based-Opamp-LTSpice\circuits\gain_integrator_stage\testbenches\tb_ac.cir
+C:\Users\rajde\OneDrive\Desktop\Hybrid-CMOS-SET-based-Opamp-LTSpice\circuits\gain_integrator_stage\models\cmos_models.inc
+
+ad_0db: mag(V(OUT)/V(VIN))=(48.0362863136dB,0°) at 10
+ad_db: 20*log10(mag(V(OUT)/V(VIN)))=(33.6313884942dB,0°) at 10
+f_3db: mag(V(OUT)/V(VIN))=Ad_0dB/sqrt(2) AT 15568.9818837
+gbw: mag(V(OUT)/V(VIN))=1 AT 4538687.71893
+phase_lf: ph(V(OUT)/V(VIN))=(45.0594321786dB,180°) at 10
+phase_at_gbw: ph(V(OUT)/V(VIN))=(35.6001084218dB,0°) at 4538687.71893
+phase_margin: (180 + Phase_at_gbw)=(47.6135105411dB,0°)

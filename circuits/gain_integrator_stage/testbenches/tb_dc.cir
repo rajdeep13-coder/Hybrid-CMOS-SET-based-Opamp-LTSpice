@@ -1,0 +1,53 @@
+* ==============================================================================
+* TESTBENCH: tb_dc.cir
+* CIRCUIT: CMOS Gain / Integrator Stage (Circuit B)
+* PURPOSE: DC Transfer Characteristic, Linear Range & Small-Signal Voltage Gain
+* ==============================================================================
+
+.include ../models/cmos_models.inc
+
+.param VDD_val = 0.80
+
+* Power Supply
+VDD VDD 0 DC {VDD_val}
+
+* PMOS Active Load Current Mirror Reference
+M9  VBP  VBP  VDD  VDD  PMOS_LV L=1.0u W=8.0u
+RPB VBP  0    175k
+
+* PMOS Active Current-Source Load
+M8  OUT  VBP  VDD  VDD  PMOS_LV L=1.0u W=8.0u
+
+* NMOS Common-Source Gain Transistor
+M7  OUT  GATE 0    0    NMOS_LV L=1.0u W=4.0u
+
+* Gate Bias Divider Network
+R1  VDD  BIAS_NODE 171.35k
+R2  BIAS_NODE 0    200k
+
+* Incremental Input Voltage Generator around Bias Point
+* V(GATE) = V(BIAS_NODE) + Vid
+Vid Vid  0    DC 0
+Ein GATE BIAS_NODE Vid 0 1.0
+
+* AC Input Coupling & Loads (preserved for topology consistency)
+CIN VIN  GATE 10u
+VIN VIN  0    DC 0
+CC  OUT  GATE 1p
+CL  OUT  0    1p
+
+* Analysis Directive: Sweep Vid from -10 mV to +10 mV in 0.05 mV steps
+.dc Vid -0.010 0.010 0.00005
+
+* Transfer and Gain Measurements
+.meas dc Vout_nom      FIND V(OUT) AT=0
+.meas dc Vout_sat_high MAX V(OUT)
+.meas dc Vout_sat_low  MIN V(OUT)
+.meas dc Gain_dc_VperV DERIV V(OUT) AT=0
+.meas dc Gain_dc_dB    PARAM (20*log10(abs(Gain_dc_VperV)))
+
+* Linear Output Voltage Range (within saturation bounds)
+.meas dc Vout_lin_high FIND V(OUT) WHEN V(OUT)=0.70
+.meas dc Vout_lin_low  FIND V(OUT) WHEN V(OUT)=0.10
+
+.end

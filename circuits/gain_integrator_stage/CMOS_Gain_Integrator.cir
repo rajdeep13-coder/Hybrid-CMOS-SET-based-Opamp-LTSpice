@@ -1,0 +1,70 @@
+* ==============================================================================
+* FILE: CMOS_Gain_Integrator.cir
+* PROJECT: Hybrid CMOS-SET Op-Amp (LTspice Implementation)
+* MILESTONE: Circuit B: CMOS Voltage Gain / Miller-Compensated Integrator Stage
+* ==============================================================================
+* TOPOLOGY:
+* - M7:  NMOS common-source voltage gain transistor (W = 4.0 um, L = 1.0 um)
+* - M8:  PMOS active current-source load (W = 8.0 um, L = 1.0 um, Id ~ 2.0 uA)
+* - M9:  PMOS diode-connected bias reference transistor (W = 8.0 um, L = 1.0 um)
+* - RPB: PMOS bias-setting resistor (175 kOhm from VBP to GND)
+* - R1:  NMOS gate-bias upper resistor (171.35 kOhm from VDD to GATE)
+* - R2:  NMOS gate-bias lower resistor (200 kOhm from GATE to GND)
+* - CIN: Input AC coupling capacitor (10 uF from VIN to GATE)
+* - CC:  Miller frequency compensation capacitor (1.0 pF from OUT to GATE)
+* - CL:  Output load capacitance (1.0 pF from OUT to GND)
+*
+* SPECIFICATIONS & TARGETS:
+* - Positive supply: VDD = 0.80 V
+* - Negative supply: GND = 0.00 V
+* - Quiescent branch current: Id(M7) = Id(M8) ~ 2.0 uA
+* - Output bias point: V(OUT) ~ 0.40 V (mid-rail headroom)
+* - Midband voltage gain: Av > 40 dB (~250 V/V)
+* - Unity Gain Bandwidth (GBW): > 4 MHz
+* ==============================================================================
+
+* Include Model Library (Generic Low-Voltage CMOS Level 1)
+.include models/cmos_models.inc
+
+* Circuit Parameters
+.param VDD_val = 0.80
+
+* Power Supply
+VDD VDD 0 DC {VDD_val}
+
+* PMOS Active Load Current Mirror Reference
+* Connections: Drain Gate Source Bulk
+M9  VBP  VBP  VDD  VDD  PMOS_LV L=1.0u W=8.0u
+RPB VBP  0    175k
+
+* PMOS Active Current-Source Load
+* Connections: Drain Gate Source Bulk
+M8  OUT  VBP  VDD  VDD  PMOS_LV L=1.0u W=8.0u
+
+* NMOS Common-Source Gain Transistor
+* Connections: Drain Gate Source Bulk
+M7  OUT  GATE 0    0    NMOS_LV L=1.0u W=4.0u
+
+* NMOS Gate Bias Divider
+R1  VDD  GATE 171.35k
+R2  GATE 0    200k
+
+* Input Coupling Capacitor & Signal Source
+CIN VIN  GATE 10u
+VIN VIN  0    SINE(0 1m 1k) AC 1 0
+
+* Miller Compensation & Load Capacitance
+CC  OUT  GATE 1p
+CL  OUT  0    1p
+
+* Default Analysis: AC Small-Signal Frequency Sweep
+.ac dec 20 1 1G
+
+* Measurement Directives
+.meas ac Ad_0dB   FIND mag(V(OUT)) AT 1
+.meas ac Ad_dB    FIND 20*log10(mag(V(OUT))) AT 1
+.meas ac f_3dB    WHEN mag(V(OUT))=Ad_0dB/sqrt(2)
+.meas ac GBW      WHEN mag(V(OUT))=1
+.meas ac Phase_lf FIND ph(V(OUT)) AT 1
+
+.end

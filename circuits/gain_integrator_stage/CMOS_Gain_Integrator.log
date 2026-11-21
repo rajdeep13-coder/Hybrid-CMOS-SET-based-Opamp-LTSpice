@@ -1,6 +1,6 @@
 LTspice 26.1.1 for Windows
-Circuit: C:\Users\rajde\OneDrive\Desktop\Hybrid-CMOS-SET-based-Opamp-LTSpice\circuits\gain_integrator_stage\CMOS_Gain_Integrator.cir
-Start Time: Mon Nov 16 13:27:47 2026
+Circuit: C:\Users\rajde\OneDrive\Desktop\Hybrid-CMOS-SET-based-Opamp-LTSpice\circuits\gain_integrator_stage\CMOS_Gain_Integrator.net
+Start Time: Sat Nov 21 15:07:05 2026
 solver = Normal
 Maximum thread count: 12
 tnom = 27
@@ -15,11 +15,12 @@ Instance "M9": Width narrower than recommended for a level 1 MOSFET.
 Instance "M8": Length shorter than recommended for a level 1 MOSFET.
 Instance "M8": Width narrower than recommended for a level 1 MOSFET.
 Direct Newton iteration succeeded in finding operating point.
-Total elapsed time: 0.104 seconds.
+Total elapsed time: 0.386 seconds.
 Total iterations: 8
 
 Files loaded:
-C:\Users\rajde\OneDrive\Desktop\Hybrid-CMOS-SET-based-Opamp-LTSpice\circuits\gain_integrator_stage\CMOS_Gain_Integrator.cir
+C:\Users\rajde\OneDrive\Desktop\Hybrid-CMOS-SET-based-Opamp-LTSpice\circuits\gain_integrator_stage\CMOS_Gain_Integrator.net
+C:\Users\rajde\AppData\Local\LTspice\lib\cmp\standard.mos
 C:\Users\rajde\OneDrive\Desktop\Hybrid-CMOS-SET-based-Opamp-LTSpice\circuits\gain_integrator_stage\models\cmos_models.inc
 
 ad_0db: mag(V(OUT))=(47.9102991065dB,0°) at 1

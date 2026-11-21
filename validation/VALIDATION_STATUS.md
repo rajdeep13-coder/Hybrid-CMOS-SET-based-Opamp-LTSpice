@@ -25,7 +25,10 @@ This document tracks the verification status for every test executed in the proj
 
 | Test ID | Domain | Testbench File | Status | Notes |
 | :--- | :--- | :--- | :--- | :--- |
-| **TEST-11** | All | `CMOS_Gain_Integrator.*` | **NOT RUN** | Pending user approval of Circuit A in accordance with Section 9. |
+| **TEST-11** | Operating point | `testbenches/tb_op.cir` | **EXECUTED** | Verified node voltages and currents in `tb_op.log`. |
+| **TEST-12** | DC transfer | `testbenches/tb_dc.cir` | **EXECUTED** | Verified gain and output extrema in `tb_dc.log`. |
+| **TEST-13** | AC response | `testbenches/tb_ac.cir` | **CORRECTED BLOCK PENDING FINAL RERUN** | Linear expressions are present; do not promote older dB-conversion results. |
+| **TEST-14** | Transient | `testbenches/tb_tran.cir` | **EXECUTED** | Verified peak-to-peak gain and THD in `tb_tran.log`. |
 
 ---
 

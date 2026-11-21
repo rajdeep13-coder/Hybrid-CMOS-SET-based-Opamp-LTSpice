@@ -1,108 +1,64 @@
 # Circuit A: CMOS Differential Input Stage
 
-This directory contains the schematic, netlist, testbenches, model cards, and empirical simulation logs for the **Milestone 1 CMOS Differential Input Stage** of the Hybrid CMOS–SET Operational Amplifier project.
+## Purpose
 
----
+Circuit A is an independently simulated low-voltage CMOS differential amplifier. It converts a differential input around a 0.6 V common-mode level into an amplified single-ended output.
 
-## 1. Circuit Schematic & Architecture
+## Topology
 
-```
-                     VDD (0.80 V)
-             +------------+------------+
-             |            |            |
-           +---+        +---+          |
-     Rbias |   |     M3 | / |       M4 |   |
-    173.5k |   |   (PMOS) /       (PMOS)
-           +---+        +---+          +---+
-             |            |              |
-             |       +----+              |
-             |       |    |              |
-     VBIAS --+-------*    |              +---> OUT (CL = 1 pF)
-             |       |    |              |
-           +---+     |  +---+          +---+
-        M6 | / |     |  |   | M1    M2 |   |
-    (NMOS)   /       |  |   |          |   |
-           +---+     |  +---+          +---+
-             |       |    |              |
-            GND      |  IN_P (VIP)     IN_N (VIN)
-                     |    |              |
-                     +----+--------------+
-                                 |
-                               TAIL
-                                 |
-                               +---+
-                            M5 |   | (NMOS Tail Sink)
-                               +---+
-                                 |
-                                GND
-```
+- M1 and M2: NMOS differential input pair.
+- M3 and M4: PMOS active current-mirror load.
+- M5: NMOS tail current sink.
+- M6: diode-connected NMOS bias reference.
+- Rbias: 173.5 kohm resistor setting the reference branch current.
+- CL: 1 pF output load.
 
-### Device Dimensioning & Roles
+The supply is 0.8 V. VIP and VIN are nominally 0.6 V for differential operating-point conditions.
 
-| Component | Type | W (µm) | L (µm) | Function | Operating Region |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **M1** | NMOS | 4.0 | 1.0 | Non-inverting input transistor | Saturation ($V_{ds} = 0.199\text{ V} > V_{ov} = 0.058\text{ V}$) |
-| **M2** | NMOS | 4.0 | 1.0 | Inverting input transistor | Saturation ($V_{ds} = 0.199\text{ V} > V_{ov} = 0.058\text{ V}$) |
-| **M3** | PMOS | 6.4 | 1.0 | Diode-connected mirror active load | Saturation ($|V_{ds}| = 0.428\text{ V} > |V_{ov}| = 0.078\text{ V}$) |
-| **M4** | PMOS | 6.4 | 1.0 | High-impedance active load | Saturation ($|V_{ds}| = 0.428\text{ V} > |V_{ov}| = 0.078\text{ V}$) |
-| **M5** | NMOS | 2.7 | 1.0 | Tail current sink ($I_{tail} = 1.996\text{ µA}$) | Saturation ($V_{ds} = 0.172\text{ V} > V_{ov} = 0.099\text{ V}$) |
-| **M6** | NMOS | 2.7 | 1.0 | Diode-connected reference mirror | Saturation ($V_{ds} = V_{gs} = 0.449\text{ V}$) |
-| **Rbias**| Resistor | — | — | Sets $I_{ref} \approx 2.02\text{ µA}$ from VDD | Passive resistor (173.5 kΩ) |
-| **CL** | Capacitor| — | — | Output load capacitance | 1.0 pF nominal load |
+## Testbenches
 
----
+| File | Purpose |
+|---|---|
+| [tb_op.cir](tb_op.cir) | Operating point, node voltages, currents, and power |
+| [tb_dc_diff.cir](tb_dc_diff.cir) | Differential DC voltage transfer |
+| [tb_dc_icmr.cir](tb_dc_icmr.cir) | Input common-mode range |
+| [tb_ac_diff.cir](tb_ac_diff.cir) | Differential AC gain and bandwidth |
+| [tb_ac_cm.cir](tb_ac_cm.cir) | Common-mode gain and CMRR |
+| [tb_tran.cir](tb_tran.cir) | Transient response and THD |
 
-## 2. Directory Contents
+The graphical schematic is [CMOS_Differential.asc](CMOS_Differential.asc), and the standalone netlist is [CMOS_Differential.cir](CMOS_Differential.cir). Generic models are in [cmos_models.inc](models/cmos_models.inc).
 
-- [CMOS_Differential.asc](file:///C:/Users/rajde/OneDrive/Desktop/Hybrid-CMOS-SET-based-Opamp-LTSpice/circuits/differential_stage/CMOS_Differential.asc): LTspice graphical schematic with full electrical pin connectivity.
-- [CMOS_Differential.cir](file:///C:/Users/rajde/OneDrive/Desktop/Hybrid-CMOS-SET-based-Opamp-LTSpice/circuits/differential_stage/CMOS_Differential.cir): Master SPICE netlist with integrated `.op`, `.ac`, and automated `.meas` directives.
-- `models/`:
-  - [cmos_models.inc](file:///C:/Users/rajde/OneDrive/Desktop/Hybrid-CMOS-SET-based-Opamp-LTSpice/circuits/differential_stage/models/cmos_models.inc): Generic low-voltage Level-1 MOSFET model library ($V_{TO} = \pm 0.35\text{ V}$).
-- Standalone Testbenches:
-  - [tb_op.cir](file:///C:/Users/rajde/OneDrive/Desktop/Hybrid-CMOS-SET-based-Opamp-LTSpice/circuits/differential_stage/tb_op.cir): Quiescent operating point, branch balance, and power dissipation.
-  - [tb_dc_diff.cir](file:///C:/Users/rajde/OneDrive/Desktop/Hybrid-CMOS-SET-based-Opamp-LTSpice/circuits/differential_stage/tb_dc_diff.cir): Large-signal differential DC input sweep ($-50\text{ mV}$ to $+50\text{ mV}$) and linear derivative gain.
-  - [tb_dc_icmr.cir](file:///C:/Users/rajde/OneDrive/Desktop/Hybrid-CMOS-SET-based-Opamp-LTSpice/circuits/differential_stage/tb_dc_icmr.cir): Common-mode input voltage range ($0\text{ V}$ to $0.8\text{ V}$) headroom sweep.
-  - [tb_ac_diff.cir](file:///C:/Users/rajde/OneDrive/Desktop/Hybrid-CMOS-SET-based-Opamp-LTSpice/circuits/differential_stage/tb_ac_diff.cir): Small-signal differential frequency response ($A_d$, $f_{-3\text{dB}}$, GBW).
-  - [tb_ac_cm.cir](file:///C:/Users/rajde/OneDrive/Desktop/Hybrid-CMOS-SET-based-Opamp-LTSpice/circuits/differential_stage/tb_ac_cm.cir): Common-mode gain ($A_{cm}$) and Common-Mode Rejection Ratio (CMRR).
-  - [tb_tran.cir](file:///C:/Users/rajde/OneDrive/Desktop/Hybrid-CMOS-SET-based-Opamp-LTSpice/circuits/differential_stage/tb_tran.cir): Transient sinusoidal response ($1\text{ kHz}$) and Total Harmonic Distortion (THD).
-- `results/`:
-  - [tb_op.log](file:///C:/Users/rajde/OneDrive/Desktop/Hybrid-CMOS-SET-based-Opamp-LTSpice/circuits/differential_stage/results/tb_op.log)
-  - [tb_dc_diff.log](file:///C:/Users/rajde/OneDrive/Desktop/Hybrid-CMOS-SET-based-Opamp-LTSpice/circuits/differential_stage/results/tb_dc_diff.log)
-  - [tb_dc_icmr.log](file:///C:/Users/rajde/OneDrive/Desktop/Hybrid-CMOS-SET-based-Opamp-LTSpice/circuits/differential_stage/results/tb_dc_icmr.log)
-  - [tb_ac_diff.log](file:///C:/Users/rajde/OneDrive/Desktop/Hybrid-CMOS-SET-based-Opamp-LTSpice/circuits/differential_stage/results/tb_ac_diff.log)
-  - [tb_ac_cm.log](file:///C:/Users/rajde/OneDrive/Desktop/Hybrid-CMOS-SET-based-Opamp-LTSpice/circuits/differential_stage/results/tb_ac_cm.log)
-  - [tb_tran.log](file:///C:/Users/rajde/OneDrive/Desktop/Hybrid-CMOS-SET-based-Opamp-LTSpice/circuits/differential_stage/results/tb_tran.log)
-  - [CMOS_Differential_asc.log](file:///C:/Users/rajde/OneDrive/Desktop/Hybrid-CMOS-SET-based-Opamp-LTSpice/circuits/differential_stage/results/CMOS_Differential_asc.log)
+## Verified Operating Point
 
----
+From [tb_op.log](tb_op.log):
 
-## 3. Measured Performance Summary (Empirical LTspice 26.1.1)
+| Parameter | Simulated value |
+|---|---:|
+| VDD | 0.800000 V |
+| VBIAS | 0.448867 V |
+| VTAIL | 0.172467 V |
+| VOUT | 0.371845 V |
+| Id(M1), Id(M2) | 0.998232 uA each |
+| Id(M5) | 1.996463 uA |
+| Id(M6) | 2.023819 uA |
+| Dissipation | 3.216226 uW |
 
-| Parameter | Specification / Target | Simulated Result | Units | Status |
-| :--- | :--- | :--- | :--- | :--- |
-| **Supply Voltage ($V_{DD}$)** | 0.80 | 0.8000 | V | PASS |
-| **Tail Current ($I_{tail}$)** | 2.00 | 1.9965 | µA | PASS (< 0.2% error) |
-| **Branch Currents ($I_{M1}, I_{M2}$)** | 1.00 each | 0.9982, 0.9982 | µA | PASS (Balance error = 0.000 nA) |
-| **Quiescent Output ($V_{out}$)** | ~0.37 | 0.3718 | V | PASS (Centered headroom) |
-| **Total Power Consumption** | Low (< 10 µW) | 3.216 | µW | PASS |
-| **Differential DC Gain ($A_{v0}$)** | > 40 dB | 50.96 (353.4 V/V) | dB | PASS |
-| **Differential AC Gain ($A_d$)** | > 40 dB | 50.97 (353.5 V/V) | dB | PASS |
-| **Dominant Pole ($f_{-3\text{dB}}$)** | Evaluated | 15.55 | kHz | PASS |
-| **Unity Gain Bandwidth (GBW)** | Evaluated | 5.46 | MHz | PASS |
-| **Common-Mode Gain ($A_{cm}$)** | Low | -55.20 (1.74 mV/V) | dB | PASS |
-| **CMRR** | > 80 dB | 106.17 | dB | PASS |
-| **Total Harmonic Distortion (THD)**| Low (< 1%) | 0.0441 | % | PASS (at $0.4\text{ mV}_\text{pp}$ input) |
-| **Input Common-Mode Range (ICMR)** | ~0.55 to 0.72 | 0.54 to 0.72 | V | PASS |
+## Verified Frequency Response
 
----
+From [tb_ac_diff.log](tb_ac_diff.log):
 
-## 4. How to Run
+| Parameter | Simulated value | Status |
+|---|---:|---|
+| Differential AC gain | 50.969 dB | Verified in log |
+| -3 dB bandwidth | 15.550 kHz | Verified in log |
+| Unity-gain frequency | 5.461958 MHz | Verified in log |
 
-Execute the automated PowerShell runner from the project root:
-```powershell
-powershell -ExecutionPolicy Bypass -File scripts\run_differential_stage.ps1
-```
-Or run individually via the command line:
-```powershell
-& "C:\Users\rajde\OneDrive\Desktop\LTSPICE\LTspice.exe" -b circuits\differential_stage\CMOS_Differential.cir
-```
+The -3 dB and GBW measurements in this log use the measured magnitude in V/V, and the corresponding twice-log-converted metric is not used.
+
+## Other Available Results
+
+- DC differential gain and input common-mode range logs are in [results/](results/).
+- Common-mode gain and CMRR log: [tb_ac_cm.log](results/tb_ac_cm.log).
+- Transient gain and THD log: [tb_tran.log](results/tb_tran.log).
+
+These are LTspice simulation results using generic Level-1 MOS models, not fabricated hardware measurements.

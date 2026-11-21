@@ -2,7 +2,7 @@
 
 ## 1. Executive Summary
 
-This project develops an ultra-low-power **Hybrid CMOS–SET Operational Amplifier** designed and verified in LTspice on Windows. 
+This project develops a **Hybrid CMOS–SET Operational Amplifier** as a future LTspice design target. The repository currently contains two separately simulated CMOS stages and not a complete hybrid amplifier.
 
 The design combines:
 1. **CMOS Analog Building Blocks**: Standard Field-Effect Transistor topologies operating at low supply voltage ($V_{DD} = 0.8\text{ V}$) and sub-microampere tail currents ($I_{tail} = 2.0\text{ µA}$).
@@ -16,17 +16,15 @@ To guarantee electrical correctness and eliminate debugging ambiguity, the proje
 
 ```mermaid
 flowchart TD
-    M1A["Milestone 1A (COMPLETED):<br/>CMOS Differential Input Stage<br/>VDD=0.8V, Itail=2uA, Ad=51 dB"] --> Gate1{"User Approval & Review Gate"}
-    Gate1 --> M1B["Milestone 1B (NEXT):<br/>CMOS Gain/Integrator Stage<br/>Miller-Compensated CS Stage"]
-    M1B --> Gate2{"Milestone 1 Integration Review"}
-    Gate2 --> M2["Milestone 2:<br/>SET Device Modeling & Integration<br/>Analytical / SPICE Macro-Model"]
+    M1A["Milestone 1A:<br/>CMOS Differential Input Stage<br/>Developed and simulated"] --> M1B["Milestone 1B:<br/>CMOS Gain/Integrator Stage<br/>Developed and simulated"]
+    M1B --> M2["Milestone 2:<br/>SET Device Modeling & Integration<br/>Analytical / SPICE Macro-Model"]
     M2 --> M3["Milestone 3:<br/>Hybrid Two-Stage Op-Amp<br/>Closed-Loop Characterization"]
 ```
 
 ### Staged Breakdown:
 - **Milestone 1: Independent CMOS Baseline Stages (No SET)**
-  - **Circuit A (Current)**: CMOS Differential Input Stage with active PMOS current-mirror load and tail current biasing.
-  - **Circuit B (Next)**: CMOS Voltage Gain / Integrator Stage with Miller compensation.
+  - **Circuit A**: CMOS Differential Input Stage with active PMOS current-mirror load and tail current biasing.
+  - **Circuit B**: CMOS Voltage Gain / Integrator Stage with Miller compensation.
 - **Milestone 2: SET Device Integration**
   - Incorporation of SPICE-compatible analytical / macro-models for Single-Electron Transistors (e.g., Mahapatra–Ionescu–Banerjee MIB model or orthodox Coulomb-blockade behavioral models).
   - Hybridization of differential pair or gain stage active loads using periodic SET elements.

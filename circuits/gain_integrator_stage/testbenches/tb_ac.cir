@@ -37,12 +37,9 @@ CL  OUT  0    1p
 .ac dec 20 1 1G
 
 * Measurements (Transfer ratio V(OUT) / V(VIN))
-.meas ac Ad_0dB       FIND mag(V(OUT)/V(VIN)) AT 10
-.meas ac Ad_dB        FIND 20*log10(mag(V(OUT)/V(VIN))) AT 10
-.meas ac f_3dB        WHEN mag(V(OUT)/V(VIN))=Ad_0dB/sqrt(2)
-.meas ac GBW          WHEN mag(V(OUT)/V(VIN))=1
-.meas ac Phase_lf     FIND ph(V(OUT)/V(VIN)) AT 10
-.meas ac Phase_at_gbw FIND ph(V(OUT)/V(VIN)) WHEN mag(V(OUT)/V(VIN))=1
-.meas ac Phase_margin PARAM (180 + Phase_at_gbw)
+.meas AC Ad_lin FIND mag(V(OUT)/V(VIN)) AT=10
+.meas AC f_3db WHEN mag(V(OUT)/V(VIN))=Ad_lin/sqrt(2) FALL=1
+.meas AC f_ug WHEN mag(V(OUT)/V(VIN))=1 FALL=1
+.meas AC phase_ug FIND ph(V(OUT)/V(VIN)) AT=f_ug
 
 .end

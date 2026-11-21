@@ -1,5 +1,7 @@
 # Milestone 1: Simulation Results & Verification Record
 
+> This document is a detailed record of Circuit A. For the combined and independently marked Circuit A/Circuit B status, including pending Circuit B AC verification, see [SIMULATION_RESULTS.md](SIMULATION_RESULTS.md).
+
 All results recorded below are **empirically measured** from actual LTspice 26.1.1 batch simulations executed on Windows 11. Raw logs are preserved under [results/](file:///C:/Users/rajde/OneDrive/Desktop/Hybrid-CMOS-SET-based-Opamp-LTSpice/circuits/differential_stage/results/).
 
 ---

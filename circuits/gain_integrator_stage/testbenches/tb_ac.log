@@ -1,6 +1,6 @@
 LTspice 26.1.1 for Windows
 Circuit: C:\Users\rajde\OneDrive\Desktop\Hybrid-CMOS-SET-based-Opamp-LTSpice\circuits\gain_integrator_stage\testbenches\tb_ac.cir
-Start Time: Sat Nov 21 15:36:59 2026
+Start Time: Sun Nov 22 16:15:31 2026
 solver = Normal
 Maximum thread count: 12
 tnom = 27
@@ -15,7 +15,7 @@ Instance "M9": Width narrower than recommended for a level 1 MOSFET.
 Instance "M8": Length shorter than recommended for a level 1 MOSFET.
 Instance "M8": Width narrower than recommended for a level 1 MOSFET.
 Direct Newton iteration succeeded in finding operating point.
-Total elapsed time: 0.123 seconds.
+Total elapsed time: 0.231 seconds.
 Total iterations: 8
 
 Files loaded:

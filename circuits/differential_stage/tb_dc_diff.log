@@ -1,6 +1,6 @@
 LTspice 26.1.1 for Windows
 Circuit: C:\Users\rajde\OneDrive\Desktop\Hybrid-CMOS-SET-based-Opamp-LTSpice\circuits\differential_stage\tb_dc_diff.cir
-Start Time: Sat Nov 14 16:04:24 2026
+Start Time: Thu Nov 26 16:04:59 2026
 solver = Normal
 Maximum thread count: 12
 tnom = 27
@@ -20,7 +20,7 @@ Instance "M3": Length shorter than recommended for a level 1 MOSFET.
 Instance "M3": Width narrower than recommended for a level 1 MOSFET.
 Instance "M4": Length shorter than recommended for a level 1 MOSFET.
 Instance "M4": Width narrower than recommended for a level 1 MOSFET.
-Total elapsed time: 0.153 seconds.
+Total elapsed time: 0.133 seconds.
 Total iterations: 2021
 
 Files loaded:
